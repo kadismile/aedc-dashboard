@@ -106,8 +106,7 @@ export const Login = () => {
       toastr.success('Login Successfully');
       setTimeout(() => setLoading(false), 1000)
       dispatch(setStaff({ token, staff }));
-      
-      //window.location.replace("/");
+      window.location.replace("/");
     }
   };
 
