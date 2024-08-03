@@ -14,6 +14,7 @@ export const Home = (props) => {
   const [totalCount, setTotalCount] = useState(0)
   const [meterCount, setMeterCount] = useState(0)
   const [customerCount, setCustomerCount] = useState(0)
+  const [customers, setCustomers] = useState(0)
   const [selectedMarker, setSelectedMarker] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
 
@@ -31,6 +32,7 @@ export const Home = (props) => {
     fetchData()
     fetchMeterCount()
     fetchCustomerCount()
+    fetchCustomers()
   }, []);
 
   const handleCloseModal = () => {
@@ -58,6 +60,12 @@ export const Home = (props) => {
     crudService.getCustomersCount().then((res) => {
       const { data } = res;
       setCustomerCount(data)
+    })
+  }
+
+  const fetchCustomers = () => {
+    crudService.getCustomers().then((res) => {
+      setCustomers(res.data.results)
     })
   }
 
@@ -182,7 +190,8 @@ export const Home = (props) => {
                       style={{ width: '100%', height: '700px' }}
                       mapStyle="mapbox://styles/mapbox/light-v11"
                     >
-                    {reports.map((report, index) => (
+                    {customers.length &&
+                    customers.map((report, index) => (
                       <div key={index}>
                         <Marker
                           longitude={Number(report.address.longitude)}
@@ -205,9 +214,9 @@ export const Home = (props) => {
                             }}
                           >
                             <div>
-                            <Link to={`/report/${selectedMarker.reportSlug}`}>
+                            <Link to={`/report/${selectedMarker.name}`}>
                               <h6>{selectedMarker.address.state}</h6>
-                              <p> {selectedMarker.reportTypeId.name}</p>
+                              <p> {selectedMarker.name}</p>
                             </Link>
                             </div>
                           </Popup>
