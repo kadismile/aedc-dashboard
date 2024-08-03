@@ -4,13 +4,13 @@ import { Pie } from 'react-chartjs-2';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 
-export const LineChart = () => {
+export const LineChart = ({ customer }) => {
   const data = {
-    labels: ['Abuja', 'Nassarawa', 'Kogi', 'Niger',],
+    labels: customer.length ? customer.map((cust) => cust.state): undefined,
     datasets: [
       {
         label: '# of Meters',
-        data: [152400, 134500, 73900, 56200, 1350],
+        data: customer.length ? customer.map((cust) => cust.count): undefined,
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',

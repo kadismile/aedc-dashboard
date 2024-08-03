@@ -2,19 +2,36 @@ import { useState, useEffect, useRef } from "react"
 import { Link } from "react-router-dom";
 import { Footer } from "../components/Footer/Footer"
 import { PageLoader } from "../components/elements/spinners"
-import { crudService } from "../services/crudService"
 import ReactMapGL, { Marker, Popup, NavigationControl } from "react-map-gl"
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { LineChart } from "../components/charts/LineChart.jsx";
-import { VerticalBarChart } from "../components/charts/VerticalBarChat.jsx";
-import { FilterModal } from "../modals/FilterModal.jsx";
+import { crudService } from "../services/crudService.js";
 
 export const Home = (props) => {
   const [loading, setLoading] = useState(false)
   const [reports, setReports] = useState([])
+  const [meters, setMeters] = useState([])
+  const [totalCount, setTotalCount] = useState(0)
+  const [meterCount, setMeterCount] = useState(0)
+  const [customerCount, setCustomerCount] = useState(0)
   const [selectedMarker, setSelectedMarker] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
 
+
+  const fetchData = () => {
+    crudService.getMeters().then((res) => {
+      const { data: { results, totalCount } } = res;
+      setTotalCount(totalCount)
+      setMeters(results);
+      setTimeout(() => setLoading(false), 500)
+    });
+  }
+
+  useEffect(() => {
+    fetchData()
+    fetchMeterCount()
+    fetchCustomerCount()
+  }, []);
 
   const handleCloseModal = () => {
     setShowFilterModal(false)
@@ -28,6 +45,29 @@ export const Home = (props) => {
     } else {
       setLoading(false)
     }
+  }
+
+  const fetchMeterCount = () => {
+    crudService.getMetersCount().then((res) => {
+      const { data } = res;
+      setMeterCount(data)
+    })
+  }
+
+  const fetchCustomerCount = () => {
+    crudService.getCustomersCount().then((res) => {
+      const { data } = res;
+      setCustomerCount(data)
+    })
+  }
+
+  const totalMeterCount = () => {
+    if (meterCount?.length) {
+      return meterCount.reduce((a, b)=> {
+        return a + b.count
+      }, 0)
+    }
+    return 0
   }
 
   return (
@@ -74,7 +114,7 @@ export const Home = (props) => {
                       <div className="card-info">
                         <div className="card-title">
                           <h3>
-                            430,500
+                            {totalMeterCount()}
                             <span className="font-sm status up">
                               <span></span>
                             </span>
@@ -84,75 +124,35 @@ export const Home = (props) => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-xxl-2 col-xl-6 col-lg-6 col-md-4 col-sm-6">
-                    <div className="card-style-1 hover-up">
-                      <div className="card-image">
-                        {" "}
-                        <img src="/images/bank.svg" alt="jobBox" />
-                      </div>
-                      <div className="card-info">
-                        <div className="card-title">
-                          <h3>
-                            152,400
-                            <span className="font-sm status up">
-                              <span></span>
-                            </span>
-                          </h3>
+                  { meterCount.length &&
+                    meterCount?.map((meter) => {
+                      return <>
+                      <div className="col-xxl-2 col-xl-6 col-lg-6 col-md-4 col-sm-6">
+                        <div className="card-style-1 hover-up">
+                          <div className="card-image">
+                            {" "}
+                            <img src="/images/bank.svg" alt="jobBox" />
+                          </div>
+                          <div className="card-info">
+                            <div className="card-title">
+                              <h3>
+                                {meter.count}
+                                <span className="font-sm status up">
+                                  <span></span>
+                                </span>
+                              </h3>
+                            </div>
+                            <p className="color-text-paragraph-2">
+                              {meter.vendorName}
+                            </p>
+                          </div>
                         </div>
-                        <p className="color-text-paragraph-2">
-                          Mojek
-                        </p>
                       </div>
-                    </div>
-                  </div>
-                  <div className="col-xxl-2 col-xl-6 col-lg-6 col-md-4 col-sm-6">
-                    <div className="card-style-1 hover-up">
-                      <div className="card-image"> <img src="/images/lamp.svg" alt="jobBox" /></div>
-                      <div className="card-info"> 
-                        <div className="card-title">
-                          <h3>134,500<span className="font-sm status up"><span></span></span>
-                          </h3>
-                        </div>
-                        <p className="color-text-paragraph-2">Protek</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-xxl-2 col-xl-6 col-lg-6 col-md-4 col-sm-6">
-                    <div className="card-style-1 hover-up">
-                      <div className="card-image"> <img src="/images/headphone.svg" alt="jobBox" /></div>
-                      <div className="card-info"> 
-                        <div className="card-title">
-                          <h3>73,900<span className="font-sm status up"><span></span></span>
-                          </h3>
-                        </div>
-                        <p className="color-text-paragraph-2">Raise Synergy</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-xxl-2 col-xl-6 col-lg-6 col-md-4 col-sm-6">
-                    <div className="card-style-1 hover-up">
-                      <div className="card-image"> <img src="/images/look.svg" alt="jobBox" /></div>
-                      <div className="card-info"> 
-                        <div className="card-title">
-                          <h3>56,200<span className="font-sm status up"><span></span></span>
-                          </h3>
-                        </div>
-                        <p className="color-text-paragraph-2">Momas Technologies</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-xxl-2 col-xl-6 col-lg-6 col-md-4 col-sm-6">
-                    <div className="card-style-1 hover-up">
-                      <div className="card-image"> <img src="/images/doc.svg" alt="jobBox" /></div>
-                      <div className="card-info"> 
-                        <div className="card-title">
-                          <h3>13,500<span className="font-sm status up"><span></span></span>
-                          </h3>
-                        </div>
-                        <p className="color-text-paragraph-2">Vendr Manufacturing</p>
-                      </div>
-                    </div>
-                  </div>
+                      </>
+                    })
+                  }
+                  
+                  
                 </div>
               </div>
             </div>
@@ -232,7 +232,7 @@ export const Home = (props) => {
                       <h5>Meter Charts</h5>
                     </div>
                     <div className="panel-body" style={{height: '725px'}}>
-                      <LineChart />
+                      <LineChart customer={customerCount} />
                     </div>
                   </div>
                 </div>
