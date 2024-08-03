@@ -40,7 +40,7 @@ export const SideBar = () => {
               </li>
 
               <li>
-                <Link className={`dashboard2 ${getActiveLink(["/reports"])}`} to="/reports">
+                <Link className={`dashboard2 ${getActiveLink(["/vendors"])}`} to="/vendors">
                   <img src="/images/tasks.svg" alt="jobBox" />
                   <span className="name">Vendors</span>
                 </Link> 
@@ -56,7 +56,7 @@ export const SideBar = () => {
               
               <WithPermissions permitedPermissions={ SUSPEND_USER_PERMISSIONS }>
                 <li>
-                  <Link className={`dashboard2 ${getActiveLink(["/reporters"])}`} to="/reporters">
+                  <Link className={`dashboard2 ${getActiveLink(["/customers"])}`} to="/customers">
                     <img src="/images/profiles.svg" alt="jobBox" />
                     <span className="name">Customers</span>
                   </Link> 

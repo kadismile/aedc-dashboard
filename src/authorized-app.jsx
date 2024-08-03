@@ -7,12 +7,13 @@ import { Staffs } from "./pages/Staff";
 import { Department } from "./pages/Department";
 import { Responder } from "./pages/Responder";
 import { Reporters } from "./pages/Reporters";
-import { Reports } from "./pages/Reports";
 import { ReportDetails } from "./pages/ReportDetails";
 import { UserProfile } from "./pages/UserProfile";
 import { Articles } from "./pages/Articles";
 import { SMSReports } from "./pages/SMSReports";
 import { RegisterNewUser } from "./pages/RegisterNewUser";
+import { Vendors } from "./pages/Vendor";
+import { Customers } from "./pages/Customers";
 
 
 export const AuthorizedApp = () => {
@@ -25,7 +26,8 @@ export const AuthorizedApp = () => {
     { path: "/responder", element: <Responder /> },
     { path: "/reporters", element: <Reporters /> },
     { path: "*", element: <Home /> },
-    { path: "/reports", element: <Reports /> },
+    { path: "/vendors", element: <Vendors /> },
+    { path: "/customers", element: <Customers /> },
     { path: "/report/:reportSlug", element: <ReportDetails /> },
     { path: "/articles", element: <Articles /> },
     { path: "/user/register", element: <RegisterNewUser /> },
