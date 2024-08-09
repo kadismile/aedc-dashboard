@@ -11,7 +11,7 @@ import { SUSPEND_USER_PERMISSIONS } from "../utils/permissions.js"
 import { Link } from "react-router-dom";
 import { crudService } from "../services/crudService.js";
 
-export const Vendors = (props) => {
+export const Meters = (props) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [data, setdata] = useState([]);
@@ -19,7 +19,7 @@ export const Vendors = (props) => {
   let notifier = new AWN();
 
   const fetchData = () => {
-    crudService.getVendors().then((res) => {
+    crudService.getMeters().then((res) => {
       const {
         data: { results },
       } = res;
@@ -54,20 +54,21 @@ export const Vendors = (props) => {
     });
   }
 
-  const listItems = data.map((user, key) => {
+  const listItems = data.map((meter, key) => {
     let number = key + 1;
     return (
       <tr key={key}>
         <td>{number++}</td>
-        <td>{user.name}</td>
-        <td>{user.phoneNumber}</td>
-        <td>{user.address}</td>
-        <td> <a href="#/" onClick={() => navigate(`/user/${user._id}`)} className="paint-red" title="edit" >
+        <td>{meter.meterNumber}</td>
+        <td>{meter.vendor.name}</td>
+        <td>{meter.meterStatus}</td>
+        <td>{meter?.customer?.name}</td>
+        <td> <a href="#/" onClick={() => navigate(`/user/${meter._id}`)} className="paint-red" title="edit" >
           <i class="fa fa-edit" aria-hidden="true"></i> 
           </a> 
         </td>
         <WithPermissions permitedPermissions={ SUSPEND_USER_PERMISSIONS }>
-          <td> <a href="#/" onClick={() => deleteStaff(user)} className="paint-red" title="delete" >
+          <td> <a href="#/" onClick={() => deleteStaff(meter)} className="paint-red" title="delete" >
             <i class="fa fa-trash" aria-hidden="true"></i> 
             </a> 
           </td>             
@@ -98,7 +99,7 @@ export const Vendors = (props) => {
       <div className="box-content">
         <div className="box-heading">
           <div className="box-title">
-            <h3 className="mb-35">Vendor Management</h3>
+            <h3 className="mb-35">Meter Management</h3>
           </div>
           <div className="box-breadcrumb">
             <div className="breadcrumbs">
@@ -106,7 +107,7 @@ export const Vendors = (props) => {
                 <li>
                   {" "}
                   <a className="icon-home" href="index.html">
-                    Users 
+                    Meters 
                   </a> 
                 </li>
                 <li>
@@ -147,7 +148,7 @@ export const Vendors = (props) => {
                         </a> */}
 
                         <Link className="dropdown-item active" to="/user/register">
-                            Register User
+                            Register installer
                         </Link> 
                       </li>
                     </ul>
@@ -159,9 +160,10 @@ export const Vendors = (props) => {
                         <thead>
                           <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Full Name</th>
-                            <th scope="col">Phone Number</th>
-                            <th scope="col">Address</th>
+                            <th scope="col">Meter Number</th>
+                            <th scope="col">Vendor Name</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Customer</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                           </tr>

@@ -47,9 +47,9 @@ export const SideBar = () => {
               </li>
 
               <li>
-                <Link className={`dashboard2 ${getActiveLink(["/sms-reports"])}`} to="/sms-reports">
+                <Link className={`dashboard2 ${getActiveLink(["/installer"])}`} to="/installer">
                   <img src="/images/tasks.svg" alt="jobBox" />
-                  <span className="name">Agents</span>
+                  <span className="name">Installer</span>
                 </Link> 
               </li>
 
@@ -59,6 +59,15 @@ export const SideBar = () => {
                   <Link className={`dashboard2 ${getActiveLink(["/customers"])}`} to="/customers">
                     <img src="/images/profiles.svg" alt="jobBox" />
                     <span className="name">Customers</span>
+                  </Link> 
+                </li>
+              </WithPermissions>
+
+              <WithPermissions permitedPermissions={ SUSPEND_USER_PERMISSIONS }>
+                <li>
+                  <Link className={`dashboard2 ${getActiveLink(["/meters"])}`} to="/meters">
+                    <img src="/images/profiles.svg" alt="jobBox" />
+                    <span className="name">Meters</span>
                   </Link> 
                 </li>
               </WithPermissions>

@@ -14,6 +14,8 @@ import { SMSReports } from "./pages/SMSReports";
 import { RegisterNewUser } from "./pages/RegisterNewUser";
 import { Vendors } from "./pages/Vendor";
 import { Customers } from "./pages/Customers";
+import { Installers } from "./pages/Installers";
+import { Meters } from "./pages/Meters";
 
 
 export const AuthorizedApp = () => {
@@ -28,6 +30,8 @@ export const AuthorizedApp = () => {
     { path: "*", element: <Home /> },
     { path: "/vendors", element: <Vendors /> },
     { path: "/customers", element: <Customers /> },
+    { path: "/installer", element: <Installers /> },
+    { path: "/meters", element: <Meters /> },
     { path: "/report/:reportSlug", element: <ReportDetails /> },
     { path: "/articles", element: <Articles /> },
     { path: "/user/register", element: <RegisterNewUser /> },
