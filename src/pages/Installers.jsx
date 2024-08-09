@@ -11,7 +11,7 @@ import { SUSPEND_USER_PERMISSIONS } from "../utils/permissions.js"
 import { Link } from "react-router-dom";
 import { crudService } from "../services/crudService.js";
 
-export const Vendors = (props) => {
+export const Installers = (props) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [data, setdata] = useState([]);
@@ -19,7 +19,7 @@ export const Vendors = (props) => {
   let notifier = new AWN();
 
   const fetchData = () => {
-    crudService.getVendors().then((res) => {
+    crudService.getInstallers().then((res) => {
       const {
         data: { results },
       } = res;
@@ -59,9 +59,9 @@ export const Vendors = (props) => {
     return (
       <tr key={key}>
         <td>{number++}</td>
-        <td>{user.name}</td>
+        <td>{user.fullName}</td>
         <td>{user.phoneNumber}</td>
-        <td>{user.address}</td>
+        <td>{user?.vendor?.name}</td>
         <td> <a href="#/" onClick={() => navigate(`/user/${user._id}`)} className="paint-red" title="edit" >
           <i class="fa fa-edit" aria-hidden="true"></i> 
           </a> 
@@ -98,7 +98,7 @@ export const Vendors = (props) => {
       <div className="box-content">
         <div className="box-heading">
           <div className="box-title">
-            <h3 className="mb-35">Vendor Management</h3>
+            <h3 className="mb-35">Installers Management</h3>
           </div>
           <div className="box-breadcrumb">
             <div className="breadcrumbs">
@@ -106,7 +106,7 @@ export const Vendors = (props) => {
                 <li>
                   {" "}
                   <a className="icon-home" href="index.html">
-                    Users 
+                    Installers 
                   </a> 
                 </li>
                 <li>
@@ -147,7 +147,7 @@ export const Vendors = (props) => {
                         </a> */}
 
                         <Link className="dropdown-item active" to="/user/register">
-                            Register User
+                            Register installer
                         </Link> 
                       </li>
                     </ul>
@@ -161,7 +161,7 @@ export const Vendors = (props) => {
                             <th scope="col">#</th>
                             <th scope="col">Full Name</th>
                             <th scope="col">Phone Number</th>
-                            <th scope="col">Address</th>
+                            <th scope="col">Vendor</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                           </tr>

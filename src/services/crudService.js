@@ -38,7 +38,7 @@ export const crudService =  {
         }
       }
       if (!response)
-        throw new Error("Cannot fetch Complainer");
+        throw new Error("Cannot fetch Meters");
       return response
     } catch (e) {
       throw e
@@ -88,6 +88,33 @@ export const crudService =  {
   getCustomers: async (data) => {
     const { rawDate, filterReport } = data || {}
     const baseUrl = `${serverUrl}/customer`;
+    const queryParams = {
+      ...transformReportType(filterReport),
+      ...transformDate(rawDate),
+    };
+
+    
+    try {
+      const url = buildUrl(baseUrl, queryParams);
+      const method = 'GET'
+      const response = await client(url, method);
+      if (response.error === 'No permissons to access this route') {
+        return {
+          data: [],
+          error: "No permissons to access this route"
+        }
+      }
+      if (!response)
+        throw new Error("Cannot fetch Complainer");
+      return response
+    } catch (e) {
+      throw e
+    }
+  },
+
+  getInstallers: async (data) => {
+    const { rawDate, filterReport } = data || {}
+    const baseUrl = `${serverUrl}/staff/all?role=installer`;
     const queryParams = {
       ...transformReportType(filterReport),
       ...transformDate(rawDate),

@@ -214,7 +214,7 @@ export const userService =  {
 
   getStaff:async () => {
     try {
-      const url = `${serverUrl}/staff/all?limit=50`
+      const url = `${serverUrl}/staff/all?role=admin&role=aedc_staff`
       console.log('Url ----------------', url)
       const method = 'GET'
       const response = await client(url, method);

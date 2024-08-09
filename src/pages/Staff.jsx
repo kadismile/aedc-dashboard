@@ -61,7 +61,7 @@ export const Staffs = (props) => {
         <td>{user.fullName}</td>
         <td>{user.phoneNumber}</td>
         <td>{user.email}</td>
-        <td>{user.department?.acronym}</td>
+        <td>{user.role}</td>
         <td> <a href="#/" onClick={() => navigate(`/user/${user._id}`)} className="paint-red" title="edit" >
           <i class="fa fa-edit" aria-hidden="true"></i> 
           </a> 
@@ -162,7 +162,7 @@ export const Staffs = (props) => {
                             <th scope="col">Full Name</th>
                             <th scope="col">Phone Number</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Department</th>
+                            <th scope="col">Type</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                           </tr>

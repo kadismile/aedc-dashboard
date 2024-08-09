@@ -201,7 +201,7 @@ export const Home = (props) => {
                           offsetTop={50} // very important 
                         >
                           <div className="marker">
-                            <img onClick={() => { setSelectedMarker(report) }} src="images/map-icon2.png" style={{ width: '8%' }} alt='dot' />
+                            <img onClick={() => { setSelectedMarker(report) }} src="images/map-icon2.png" style={{ width: '2%' }} alt='dot' />
                           </div>
                         </Marker>
                         { selectedMarker && (
