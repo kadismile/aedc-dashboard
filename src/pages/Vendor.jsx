@@ -131,7 +131,7 @@ export const Vendors = (props) => {
                         setLoading={handleLoadingChange}
                         setData={ handleDataChange }
                         searchTextHandler={ handleSearchText }
-                        type={'users'}
+                        model={'vendors'}
                       />
                     </div>
                     

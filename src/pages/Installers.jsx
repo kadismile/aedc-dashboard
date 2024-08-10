@@ -126,12 +126,12 @@ export const Installers = (props) => {
                   <div className="panel-head">
                     <div className="row"> 
                     <div className=" col-lg-4"></div>
-                      <Search
+                    <Search
                         loading={loading} 
                         setLoading={handleLoadingChange}
                         setData={ handleDataChange }
                         searchTextHandler={ handleSearchText }
-                        type={'users'}
+                        model={'staffs'}
                       />
                     </div>
                     
