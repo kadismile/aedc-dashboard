@@ -154,6 +154,19 @@ export const crudService =  {
       throw e
     }
   },
+
+  searchResource:async (data) => {
+    try {
+      const url = `${serverUrl}/search`
+      const method = 'POST'
+      const response = await client(url, method, { ...data });
+      if (!response)
+        throw new Error("Cannot Search");
+      return response
+    } catch (e) {
+      throw e
+    }
+  },
 }
 
 const buildUrl = (baseUrl, queryParams) => {

@@ -132,7 +132,7 @@ export const Customers = (props) => {
                         setLoading={handleLoadingChange}
                         setData={ handleDataChange }
                         searchTextHandler={ handleSearchText }
-                        type={'users'}
+                        model={'customers'}
                       />
                     </div>
                     

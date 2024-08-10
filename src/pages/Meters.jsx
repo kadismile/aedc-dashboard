@@ -1,22 +1,14 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { userService } from "../services/userService.js";
 import { MiniSpinner } from "../components/elements/spinners.jsx";
 import { PageLoader } from "../components/elements/spinners.jsx";
 import { Search } from "../components/elements/Search.jsx";
-import AWN from "awesome-notifications";
-import toastr from 'toastr'
-import { WithPermissions } from "../components/elements/WithPermissions.jsx";
-import { SUSPEND_USER_PERMISSIONS } from "../utils/permissions.js"
 import { Link } from "react-router-dom";
 import { crudService } from "../services/crudService.js";
 
 export const Meters = (props) => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [data, setdata] = useState([]);
   const [newData, setNewData] = useState(false)
-  let notifier = new AWN();
 
   const fetchData = () => {
     crudService.getMeters().then((res) => {
@@ -32,27 +24,6 @@ export const Meters = (props) => {
     fetchData()
   }, [newData]);
 
-  const deleteStaff = (user) => {
-    let onOk = async () => {
-      const data = {
-        userId: user._id,
-        isActive: user.isActive
-      }
-      const response = await userService.deleteUser(data);
-      const {status, message} = response
-      if (status === 'success')
-      setNewData(!newData)
-      toastr.success(message);
-    };
-    let onCancel = () => {
-      return;
-    };
-    notifier.confirm("Are you sure you want to go ahead with this?", onOk, onCancel, {
-      labels: {
-        confirm: `Delete ${user.fullName} ?`,
-      },
-    });
-  }
 
   const meterStatusColor = (meterStatus) => {
     if (meterStatus === 'activated') {
@@ -82,7 +53,7 @@ export const Meters = (props) => {
   });
 
   const handleSearchText = () => {
-    clg
+    console.log('Searching --------------')
     setLoading(true)
     fetchData()
   };
@@ -137,7 +108,7 @@ export const Meters = (props) => {
                         setLoading={handleLoadingChange}
                         setData={ handleDataChange }
                         searchTextHandler={ handleSearchText }
-                        type={'users'}
+                        model={'meters'}
                       />
                     </div>
                     
