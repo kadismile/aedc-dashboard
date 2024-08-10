@@ -54,30 +54,35 @@ export const Meters = (props) => {
     });
   }
 
+  const meterStatusColor = (meterStatus) => {
+    if (meterStatus === 'activated') {
+      return 'green'
+    }
+
+    if (meterStatus === 'installed') {
+      return 'orange'
+    }
+
+    if (meterStatus === 'assigned') {
+      return '#0615f4'
+    }
+  }
+
   const listItems = data.map((meter, key) => {
     let number = key + 1;
     return (
       <tr key={key}>
         <td>{number++}</td>
-        <td>{meter.meterNumber}</td>
-        <td>{meter.vendor.name}</td>
-        <td>{meter.meterStatus}</td>
-        <td>{meter?.customer?.name}</td>
-        <td> <a href="#/" onClick={() => navigate(`/user/${meter._id}`)} className="paint-red" title="edit" >
-          <i class="fa fa-edit" aria-hidden="true"></i> 
-          </a> 
-        </td>
-        <WithPermissions permitedPermissions={ SUSPEND_USER_PERMISSIONS }>
-          <td> <a href="#/" onClick={() => deleteStaff(meter)} className="paint-red" title="delete" >
-            <i class="fa fa-trash" aria-hidden="true"></i> 
-            </a> 
-          </td>             
-        </WithPermissions>
+       <td>  <Link to={`/meter/${meter.meterNumber}`}>  {meter.meterNumber} </Link></td>
+        <td> <Link to={`/meter/${meter.meterNumber}`}> {meter.vendor.name} </Link></td>
+        <td> <Link to={`/meter/${meter.meterNumber}`}> { <span style={{color: meterStatusColor(meter.meterStatus )}}> {meter.meterStatus} </span>}</Link></td>
+        <td> <Link to={`/meter/${meter.meterNumber}`}> {meter?.customer?.name} </Link> </td>
       </tr>
     );
   });
 
   const handleSearchText = () => {
+    clg
     setLoading(true)
     fetchData()
   };
@@ -164,8 +169,6 @@ export const Meters = (props) => {
                             <th scope="col">Vendor Name</th>
                             <th scope="col">Status</th>
                             <th scope="col">Customer</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
                           </tr>
                         </thead>
                         <tbody>

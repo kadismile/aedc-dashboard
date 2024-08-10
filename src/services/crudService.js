@@ -139,6 +139,21 @@ export const crudService =  {
     }
   },
 
+  getOneMeter:async (meterNumber) => {
+    if (!meterNumber)
+    return {
+      status: 'failed',
+      message: '',
+    }
+    try {
+      const url = `${serverUrl}/meter/?meterNumber=${meterNumber}`
+      const method = 'GET'
+      const response = await client(url, method);
+      return response
+    } catch (e) {
+      throw e
+    }
+  },
 }
 
 const buildUrl = (baseUrl, queryParams) => {
