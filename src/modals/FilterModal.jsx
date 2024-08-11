@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import { crudService } from '../services/crudService';
-import StateDropDown from '../components/elements/NigerianStates';
-import LGADropDown from '../components/elements/LGADropDown';
-import { IncidentType } from '../components/elements/IncidentTypes';
 import { CalendarModal } from './CalendarModal';
 import moment from 'moment';
 import { mkConfig, generateCsv, download } from "export-to-csv";
 import { reportService } from '../services/reportsService';
+import { VendorDropDown } from '../components/elements/VendorDropDown';
+import { StateDropDown } from '../components/elements/StateDropDown';
+import { StatusDropDown } from '../components/elements/StatusDropDown';
+
 export const FilterModal = (props) => {
   const [lga, setLga] = useState(["select a state"])
   const [reports, setReports] = useState(["select a state"])
@@ -16,58 +17,36 @@ export const FilterModal = (props) => {
   const [showModal, setShowModal] = useState(false)
   const [formValues, setFormValues] = useState({
     state: undefined,
-    localGovt: undefined,
-    incidentType: undefined,
     date: '',
     rawDate: '',
+    vendor: undefined,
+    meterStatus: undefined,
   })
-  const { state, localGovt,incidentType, rawDate } = formValues
+  const { state, rawDate, vendor, meterStatus } = formValues
 
   const fetchData = () => {
-    const { state, localGovt,incidentType, rawDate } = formValues
+    const { state, rawDate, vendor } = formValues
     setLoading(true)
-    crudService.getReports({state, localGovt,incidentType, rawDate}).then((res) => {
+    crudService.getMeters({ rawDate, vendor, state, meterStatus }).then((res) => {
       const {
-        data: { data },
+        data: { results },
       } = res
-      props.dataFromFilter(data)
-      setReports(data)
-      prepareCoordinates(data)
+      props.dataFromFilter(results)
+      setReports(results)
       setTimeout(() => setLoading(false), 500)
     })
   }
 
   useEffect(() => {
     fetchData()
-  }, [state, localGovt, incidentType, rawDate])
-
-  const prepareCoordinates = (reports) => {
-    let coordinates = []
-    if (reports?.length) {
-      for (let report of reports) {
-        coordinates.push(report)
-      }
-    }
-    setCoordinates(coordinates)
-  }
+  }, [state, rawDate, vendor, meterStatus])
 
   const handleStateData = (data) => {
     const { value } = data || {}
-    setLga(value?.lgas)
     setFormValues((prevState) => {
       return {
         ...prevState,
-        state: value?.state,
-      }
-    })
-  }
-
-  const handleLgaData = (data) => {
-    const { value } = data || {}
-    setFormValues((prevState) => {
-      return {
-        ...prevState,
-        localGovt: value,
+        state: value,
       }
     })
   }
@@ -77,7 +56,17 @@ export const FilterModal = (props) => {
     setFormValues((prevState) => {
       return {
         ...prevState,
-        incidentType: value,
+        vendor: value,
+      }
+    })
+  }
+
+  const handleDataFromStatus = (data) => {
+    const { value } = data || {}
+    setFormValues((prevState) => {
+      return {
+        ...prevState,
+        meterStatus: value,
       }
     })
   }
@@ -127,34 +116,36 @@ export const FilterModal = (props) => {
             <h5 className="mt-10 mb-5 text-brand-1">Filter </h5>
           </div>
           <form className="login-register text-start mt-20" action="#">
-          <div className="form-group">
+          {/* <div className="form-group">
             <StateDropDown label={"State"} dataToComponent={handleStateData}/>
-          </div> 
+          </div>  */}
         
-            <div className="form-group">
-              <LGADropDown
-                label={"LGA"}
-                lgaData={lga}
-                dataToComponent={handleLgaData}
+       
+
+            <div className="form-group" id='state'>
+              <StateDropDown
+                label={"State"}
+                dataToComponent={handleStateData}
               />
-            </div>
+            </div> 
+
             <div className="form-group">
-              <IncidentType
-                label={"Incident Type"}
+              <VendorDropDown
+                label={"Vendor"}
                 dataToComponent={handleDataFromDropDown}
               />
             </div> 
 
-            <input
-                className="form-control"
-                type="text"
-                name="name"
-                placeholder="Date"
-                onClick={() => setShowModal(true)}
-                value={formValues.date}
-                readOnly
+            <div className="form-group">
+              <StatusDropDown
+                label={"Status"}
+                dataToComponent={handleDataFromStatus}
               />
+            </div> 
+
+            
               <br/>
+
               <div className="display-flex2">
               <button 
                   onClick={downloadCSV}
@@ -165,6 +156,7 @@ export const FilterModal = (props) => {
                 <i class="fa-solid fa-cloud-download"></i> Download CSv
               </button>
               </div>
+
             <div> 
             </div>
             <br/>

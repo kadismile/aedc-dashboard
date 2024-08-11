@@ -35,20 +35,6 @@ export const Home = (props) => {
     fetchCustomers()
   }, []);
 
-  const handleCloseModal = () => {
-    setShowFilterModal(false)
-  };
-
-  const handleFilterData = (data) => {
-    setLoading(true)
-    if (data?.length) {
-      setLoading(false)
-      setReports(data)
-    } else {
-      setLoading(false)
-    }
-  }
-
   const fetchMeterCount = () => {
     crudService.getMetersCount().then((res) => {
       const { data } = res;
