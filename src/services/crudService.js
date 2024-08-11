@@ -19,16 +19,9 @@ export const crudService =  {
   },
 
   getMeters: async (data) => {
-    const { rawDate, filterReport } = data || {}
     const baseUrl = `${serverUrl}/meter`;
-    const queryParams = {
-      ...transformReportType(filterReport),
-      ...transformDate(rawDate),
-    };
-
-    
     try {
-      const url = buildUrl(baseUrl, queryParams);
+      const url = buildUrl(baseUrl, data);
       const method = 'GET'
       const response = await client(url, method);
       if (response.error === 'No permissons to access this route') {
@@ -171,22 +164,22 @@ export const crudService =  {
 
 const buildUrl = (baseUrl, queryParams) => {
   const url = new URL(baseUrl);
-  Object.keys(queryParams).forEach((key) => {
-    if (queryParams[key] === undefined) {
-      url.searchParams.delete(key);
-    } else {
-      url.searchParams.set(key, queryParams[key]);
-    }
-  });
-
+  if (queryParams) {
+    Object.keys(queryParams).forEach((key) => {
+      if (queryParams[key] === undefined || queryParams[key] === '') {
+        url.searchParams.delete(key);
+      } else {
+        url.searchParams.set(key, queryParams[key]);
+      }
+    });
+  }
   return url.toString();
 }
 
 const transformReportType = (data) => {
   return {
     sort: data?.sort === 1 ? 1 : undefined,
-    exists: data?.userId === true ? true : data?.userId === false ? false : undefined,
-    verified: data?.verified ? 'verified' : undefined,
+    vendor: data?.vendor ? data?.vendor : undefined,
   };
 
 }
