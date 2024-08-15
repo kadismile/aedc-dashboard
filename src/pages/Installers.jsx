@@ -19,6 +19,7 @@ export const Installers = (props) => {
   let notifier = new AWN();
 
   const fetchData = () => {
+    setLoading(true)
     crudService.getInstallers().then((res) => {
       const {
         data: { results },
@@ -86,6 +87,10 @@ export const Installers = (props) => {
   };
 
   const handleDataChange = (data) => {
+    if (data.clearSearch) {
+      fetchData();
+      return
+    }
     setdata(data);
   };
 

@@ -11,7 +11,6 @@ export const MeterDetails = () => {
   const [meter, setMeter] = useState(true)
 
   const { meterNumber } = useParams();
-  console.log('meter ===============', meterNumber)
   let user = store?.getState()?.user?.user
   if (user) {
     user = user.user
@@ -35,10 +34,6 @@ export const MeterDetails = () => {
       console.log('No match found');
     }
   }
-
-
-
-  console.log("Meter ==============>>>> ", meter)
   
 
   return (
@@ -80,13 +75,13 @@ export const MeterDetails = () => {
                       <h5>Meter Details</h5>
                       <hr/>
                       
-                                <p> Produced By: <b style={{fontWeight: 'bolder', color: '#5e81ff'}}>{meter.vendor.name}</b> </p>
+                                <p> Produced By: <b style={{fontWeight: 'bolder', color: '#5e81ff'}}>{meter?.vendor?.name}</b> </p>
                                 <hr/>
                                 <p> Meter type: <b style={{fontWeight: 'bolder', color: '#5e81ff'}}>{meter?.typeOfMeter}</b> </p>
                                 <hr/>
-                                <p> Customer Name: <b style={{fontWeight: 'bolder', color: '#5e81ff'}}>{meter.customer.name}</b> </p>
+                                <p> Customer Name: <b style={{fontWeight: 'bolder', color: '#5e81ff'}}>{meter?.customer?.name}</b> </p>
                                 <hr/>
-                                <p> Customer Address: <b style={{fontWeight: 'bolder', color: '#5e81ff'}}>{meter?.customer?.address.fullAddress} {meter.customer.address.state}</b> </p>
+                                <p> Customer Address: <b style={{fontWeight: 'bolder', color: '#5e81ff'}}>{meter?.customer?.address?.fullAddress} {meter?.customer?.address?.state}</b> </p>
                                 <hr/>
                                 <p> Status: <span style={{fontWeight: 'bolder', color: '#5e81ff'}}>{(meter?.meterStatus)}</span> </p>
                                 <hr/>
@@ -96,17 +91,7 @@ export const MeterDetails = () => {
                         <div className="col-lg-9">
                           <div className="row">
                             
-                            <div className="col-lg-6 col-md-6">
-                              
-
-                            <div className="box-padding">
-                              <div className="panel-head">
-                                
-                              </div>
-                            </div>
-
-
-                            </div>
+                            
                             
                             <div className="col-lg-12">
                               <div className="form-group mt-10">
@@ -127,7 +112,8 @@ export const MeterDetails = () => {
                                   </div>
                                   <div className="timeline-info">
                                     <h6 className="color-brand-1 mb-20">
-                                      {meter.action}
+                                      {meter.action} &nbsp; at  &nbsp;
+                                      {meter.address.fullAddress} {meter.address.state} state
                                     </h6>
                                   </div>
                             </div>
@@ -136,6 +122,55 @@ export const MeterDetails = () => {
                             }
           
                           </div>
+
+
+                          
+                        </div>
+
+
+
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+
+
+                        <div className="col-lg-9">
+                          <div className="row">
+                            <div className="col-lg-12">
+                              <div className="form-group mt-10">
+                                <button className="btn btn-default btn-brand icon-tick">
+                                  Meter Attachments
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="box-timeline mt-50">
+                            { 
+                              meter?.attachments.map((attachment) => {
+                                return <> 
+                            <div className="item-timeline">
+                                  <div className="timeline-year">
+                                    
+                                  </div>
+                                  <div className="timeline-info">
+                                    <img src={attachment?.secure_url} alt=""/>
+                                  </div>
+                            </div>
+                                </>
+                              })
+                            }
+          
+                          </div>
+
+
+                          
                         </div>
                       </div>
                     </div>
@@ -144,6 +179,9 @@ export const MeterDetails = () => {
               </div>
             </div>
           </div>
+
+
+          
         </div>
 
       </>

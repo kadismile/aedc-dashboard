@@ -19,6 +19,7 @@ export const Customers = (props) => {
   let notifier = new AWN();
 
   const fetchData = () => {
+    setLoading(true)
     crudService.getCustomers().then((res) => {
       const {
         data: { results },
@@ -87,6 +88,10 @@ export const Customers = (props) => {
   };
 
   const handleDataChange = (data) => {
+    if (data.clearSearch) {
+      fetchData();
+      return
+    }
     setdata(data);
   };
 

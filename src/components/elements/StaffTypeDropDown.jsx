@@ -4,7 +4,7 @@ import Select from 'react-select';
 import { store } from '../../redux/store';
 
 
-export const StatusDropDown =  ({ label, dataToComponent }) => {
+export const StaffTypeDropDown =  ({ label, dataToComponent }) => {
   let staff = store?.getState()?.staff?.staff
   let searchParams
   if (staff) {
@@ -13,7 +13,6 @@ export const StatusDropDown =  ({ label, dataToComponent }) => {
   const [selectedOption, setSelectedOption] = useState('other');
 
   const handleClick = async (data) => {
-    console.log('I have been clicked ----------->>>', data)
     const { value, label } = data || {}
     setSelectedOption(value)
     dataToComponent({ label, value})
@@ -22,20 +21,16 @@ export const StatusDropDown =  ({ label, dataToComponent }) => {
   const options = () => {
     return [
       {
-        value: 'new_meter',
-        label: 'new_meter'
+        value: 'installer',
+        label: 'Installer'
       },
       {
-        value: 'installed',
-        label: 'installed'
+        value: 'aedc_staff',
+        label: 'AEDC Staff'
       },
       {
-        value: 'assigned',
-        label: 'assigned'
-      },
-      {
-        value: 'commisioned',
-        label: 'commisioned'
+        value: 'meter_access_provider',
+        label: 'Meter Access provider'
       },
     ]
   }

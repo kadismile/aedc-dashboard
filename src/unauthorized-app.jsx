@@ -2,14 +2,14 @@ import { useRoutes } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { ResetPassword } from "./pages/ResetPassword";
-import { RegisterNewUser } from "./pages/RegisterNewUser";
+import { RegisterNewStaff } from "./pages/RegisterNewStaff";
 
 export const UnauthorizedApp = () => {
   const routes = useRoutes([
     { path: "/login", element: <Login /> },
     { path: "/forgot-password", element: <ForgotPassword /> },
     { path: "/reset-password/:resetToken", element: <ResetPassword /> },
-    { path: "/user/register", element: <RegisterNewUser /> },
+    { path: "/user/register", element: <RegisterNewStaff /> },
     { path: "*", element: <Login /> },
   ]);
 

@@ -86,7 +86,6 @@ export const Search = ({ loading, setLoading, setData, searchTextHandler, model 
     event.preventDefault();
     setLoading(true);
     const { searchText } = formValues;
-    console.log('searchText ===========>>>>> ', searchText)
     const body = {
       searchText: searchText.trim().replace(/\s+/g, ' '),
       model,
@@ -99,6 +98,10 @@ export const Search = ({ loading, setLoading, setData, searchTextHandler, model 
       setLoading(false);
     }
   };
+
+  const clearSearch = () => {
+    setData({ clearSearch: true });
+  }
 
 
   return (
@@ -113,6 +116,7 @@ export const Search = ({ loading, setLoading, setData, searchTextHandler, model 
         value={formValues.searchText}
         name="searchText"
       />
+      <i onClick={clearSearch} class="fa-solid fa-circle-xmark mt-10 fa-1x" style={{ marginLeft: '80%', top: '16px', cursor: 'pointer'}}></i>
     </div>
     { disableForm() ? (
         <DisabledButton title={'Search'} className={'btn btn-brand-1 w-10'} style={{'padding': '10px 25px'}}/>

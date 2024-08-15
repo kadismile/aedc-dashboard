@@ -18,6 +18,7 @@ export const Staffs = (props) => {
   let notifier = new AWN();
 
   const fetchData = () => {
+    setLoading(true)
     userService.getStaff().then((res) => {
       const {
         data: { results },
@@ -86,6 +87,10 @@ export const Staffs = (props) => {
   };
 
   const handleDataChange = (data) => {
+    if (data.clearSearch) {
+      fetchData();
+      return
+    }
     setdata(data);
   };
 
