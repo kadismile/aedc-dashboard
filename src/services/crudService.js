@@ -21,6 +21,11 @@ export const crudService =  {
   getMeters: async (data) => {
     const baseUrl = `${serverUrl}/meter`;
     try {
+      if (data?.rawDate) {
+        data = {...data, ...transformDate(data?.rawDate)}
+        delete data.rawDate
+      }
+
       const url = buildUrl(baseUrl, data);
       const method = 'GET'
       const response = await client(url, method);
@@ -155,6 +160,19 @@ export const crudService =  {
       const response = await client(url, method, { ...data });
       if (!response)
         throw new Error("Cannot Search");
+      return response
+    } catch (e) {
+      throw e
+    }
+  },
+
+  addVendor: async (data) => {
+    try {
+      const url = `${serverUrl}/vendor`
+      const method = 'POST'
+      const response = await client(url, method, { ...data });
+      if (!response)
+        throw new Error("Cannot Add Department");
       return response
     } catch (e) {
       throw e

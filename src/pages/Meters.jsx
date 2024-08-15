@@ -9,23 +9,26 @@ import { FilterModal } from "../modals/FilterModal.jsx";
 export const Meters = (props) => {
   const [loading, setLoading] = useState(true);
   const [data, setdata] = useState([]);
-  const [newData, setNewData] = useState(false);
+  const [searched, setSearched] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [documentCount, setDocumentCount] = useState(0)
 
   const fetchData = () => {
+    setLoading(true)
     crudService.getMeters().then((res) => {
       const {
         data: { results },
       } = res;
       setdata(results);
+      setDocumentCount(res.data.filterdDocumentsCount)
       setTimeout(() => setLoading(false), 500);
     });
   };
 
   useEffect(() => {
     fetchData();
-  }, [newData]);
+  }, []);
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -33,7 +36,7 @@ export const Meters = (props) => {
   };
 
   const meterStatusColor = (meterStatus) => {
-    if (meterStatus === "activated") {
+    if (meterStatus === "new_meter") {
       return "green";
     }
 
@@ -43,6 +46,10 @@ export const Meters = (props) => {
 
     if (meterStatus === "assigned") {
       return "#0615f4";
+    }
+
+    if (meterStatus === "commissioned") {
+      return "#07a9ab";
     }
   };
 
@@ -58,7 +65,7 @@ export const Meters = (props) => {
         </td>
         <td>
           {" "}
-          <Link to={`/meter/${meter.meterNumber}`}> {meter.vendor.name} </Link>
+          <Link to={`/meter/${meter.meterNumber}`}> {meter?.vendor?.name} </Link>
         </td>
         <td>
           {" "}
@@ -90,7 +97,6 @@ export const Meters = (props) => {
     );
   });
   }
-  
 
   const handleSearchText = () => {
     setLoading(true);
@@ -102,22 +108,29 @@ export const Meters = (props) => {
   };
 
   const handleDataChange = (data) => {
+    if (data.clearSearch) {
+      fetchData();
+      return
+    }
+
+    setSearched(true)
     setdata(data);
+    setDocumentCount(data.length)
   };
 
   const handleFilterData = (data) => {
-    console.log("DATA FROM FILTER ---------->>>> 1234 ", data)
-    setLoading(true);
-    if (data?.length) {
-      setLoading(false);
-      setdata(data)
-    } else {
-      setLoading(false);
+    if (searched === false) {
+      setdata(data.results)
+      setDocumentCount(data.filterdDocumentsCount)
     }
   };
 
-
-  console.log("Data ================>>>>>>> ", data)
+  const handleModal = () => {
+    setSearched(prevSearched => {
+      return false;
+    });
+    setShowFilterModal(true);
+  }
 
   return (
     <>
@@ -129,7 +142,12 @@ export const Meters = (props) => {
         <div className="box-content">
           <div className="box-heading">
             <div className="box-title">
-              <h3 className="mb-35">Meter Management</h3>
+              <h3 className="mb-10">Meter Management</h3>
+              <div className="text-start">
+                <a className="btn btn-tags-sm mb-10 mr-5" href="jobs-grid.html">
+                  Count: {documentCount}
+                </a>
+              </div>
             </div>
             <div className="box-breadcrumb">
               <div className="breadcrumbs">
@@ -193,12 +211,13 @@ export const Meters = (props) => {
                               searchTextHandler={handleSearchText}
                               model={"meters"}
                             />
+                           
                           </div>
                           <div className="col-xl-6 col-lg-7 text-lg-end mt-sm-15">
                             <div className="display-flex2">
                               <div className="dropdown dropdown-sort">
                                 <button
-                                  onClick={() => setShowFilterModal(true)}
+                                  onClick={() => handleModal() }
                                   className="btn btn-default"
                                   type="submit"
                                 >

@@ -10,9 +10,7 @@ import { StateDropDown } from '../components/elements/StateDropDown';
 import { StatusDropDown } from '../components/elements/StatusDropDown';
 
 export const FilterModal = (props) => {
-  const [lga, setLga] = useState(["select a state"])
   const [reports, setReports] = useState(["select a state"])
-  const [coordinates, setCoordinates] = useState([])
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false)
   const [formValues, setFormValues] = useState({
@@ -22,19 +20,19 @@ export const FilterModal = (props) => {
     vendor: undefined,
     meterStatus: undefined,
   })
+  
   const { state, rawDate, vendor, meterStatus } = formValues
 
   const fetchData = () => {
     const { state, rawDate, vendor } = formValues
     setLoading(true)
-    crudService.getMeters({ rawDate, vendor, state, meterStatus }).then((res) => {
-      const {
-        data: { results },
-      } = res
-      props.dataFromFilter(results)
-      setReports(results)
-      setTimeout(() => setLoading(false), 500)
-    })
+      crudService.getMeters({ rawDate, vendor, state, meterStatus }).then((res) => {
+        const {data} = res
+        props.dataFromFilter(data)
+        setReports(data)
+        setTimeout(() => setLoading(false), 500)
+      })
+   
   }
 
   useEffect(() => {
@@ -88,6 +86,16 @@ export const FilterModal = (props) => {
     }
   }
 
+  const clearDate = () => {
+    setFormValues((prevState) => {
+      return {
+        ...prevState,
+        date: '',
+        rawDate: undefined
+      }
+    })
+  }
+
   const downloadCSV = () => {
     const csvConfig = mkConfig({ 
       useKeysAsHeaders: true ,
@@ -116,12 +124,7 @@ export const FilterModal = (props) => {
             <h5 className="mt-10 mb-5 text-brand-1">Filter </h5>
           </div>
           <form className="login-register text-start mt-20" action="#">
-          {/* <div className="form-group">
-            <StateDropDown label={"State"} dataToComponent={handleStateData}/>
-          </div>  */}
-        
-       
-
+      
             <div className="form-group" id='state'>
               <StateDropDown
                 label={"State"}
@@ -142,8 +145,20 @@ export const FilterModal = (props) => {
                 dataToComponent={handleDataFromStatus}
               />
             </div> 
+            <div className="form-group">
+            <input
+                className="form-control"
+                type="text"
+                name="name"
+                placeholder="Date"
+                onClick={() => setShowModal(true)}
+                value={formValues.date}
+                readOnly
+            />
+            <i onClick={clearDate} class="fa-solid fa-circle-xmark mt-10 fa-1x" style={{ marginLeft: '80%', top: '16px', cursor: 'pointer'}}></i>
 
-            
+            </div>
+             
               <br/>
 
               <div className="display-flex2">

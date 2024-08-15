@@ -6,11 +6,11 @@ import { SideBar } from "./components/SideBar/SideBar";
 import { Staffs } from "./pages/Staff";
 import { MeterDetails } from "./pages/MeterDetails";
 import { UserProfile } from "./pages/UserProfile";
-import { RegisterNewUser } from "./pages/RegisterNewUser";
 import { Vendors } from "./pages/Vendor";
 import { Customers } from "./pages/Customers";
 import { Installers } from "./pages/Installers";
 import { Meters } from "./pages/Meters";
+import { RegisterNewStaff } from "./pages/RegisterNewStaff";
 
 
 export const AuthorizedApp = () => {
@@ -24,7 +24,7 @@ export const AuthorizedApp = () => {
     { path: "/installer", element: <Installers /> },
     { path: "/meters", element: <Meters /> },
     { path: "/meter/:meterNumber", element: <MeterDetails /> },
-    { path: "/user/register", element: <RegisterNewUser /> },
+    { path: "/user/register", element: <RegisterNewStaff /> },
   ]);
 
   return (

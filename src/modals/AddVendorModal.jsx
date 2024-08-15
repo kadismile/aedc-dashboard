@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import toastr from 'toastr';
 import { DisabledButton, LoadingButton, SubmitButton } from "../components/elements/Buttons"
 import { crudService } from '../services/crudService';
-export const AddDeptModal = (props) => {
+
+
+export const AddVendorModal = (props) => {
   const formFields = {
     name: '',
-    acronym: ''
+    phoneNumber: '',
+    address: '',
   };
 
   const [submitForm, setSubmitForm] = useState(false);
@@ -42,15 +45,26 @@ export const AddDeptModal = (props) => {
 
   const validateForm = (name, errors, value) => {
     switch (name) {
-      case "acronym":
-        errors.acronym = "";
+
+      case "address":
+        errors.address = "";
         if (value.length && value.length <= 1) {
-          errors.acronym = "acronym must be more than 3 characters long!";
+          errors.address = "address must be more than 3 characters long!";
           setSubmitForm(false);
         } else {
           setSubmitForm(true);
         }
-        return errors.acronym;
+        return errors.address;
+
+      case "phoneNumber":
+        errors.phoneNumber = "";
+          if (value.length && value.length <= 10) {
+            errors.phoneNumber = "Phone Number must be more than 10 characters long!";
+            setSubmitForm(false);
+          } else {
+            setSubmitForm(true);
+          }
+          return errors.phoneNumber;  
 
       case "name":
         errors.name = "";
@@ -87,13 +101,12 @@ export const AddDeptModal = (props) => {
   };
 
   const handleSubmit = async (event) => {
-    props.onHide({addDept: true})
+    props.onHide({ addVendor: true })
     event.preventDefault();
     setLoading(true);
-    const { name, acronym } = formValues;
-    const response = await crudService.addDept({
-      name,
-      acronym
+    const { name, phoneNumber, address } = formValues;
+    const response = await crudService.addVendor({
+      name, phoneNumber, address
     })
     const { status } = response
     if (status === 'failed') {
@@ -102,7 +115,7 @@ export const AddDeptModal = (props) => {
     } else {
       toastr.success('Login Successfully');
       setTimeout(() => setLoading(false), 1000)
-      props.onHide({addDept: true})
+      props.onHide({ addVendor: true })
     }
   };
 
@@ -110,19 +123,19 @@ export const AddDeptModal = (props) => {
     <Modal
       aria-labelledby="contained-modal-title-vcenter"
       show={props.show}
-      onHide={() => props.onHide({addDept: true})}
+      onHide={() => props.onHide({addVendor: true})}
     >
       <Modal.Header closeButton>
         
       </Modal.Header>
       <Modal.Body>
           <div className="text-center">
-            <h2 className="mt-10 mb-5 text-brand-1">Add Department</h2>
+            <h2 className="mt-10 mb-5 text-brand-1">Add Vendor</h2>
           </div>
           <form className="login-register text-start mt-20" action="#">
             <div className="form-group">
               <label className="form-label" htmlFor="input-1">
-                Name of Department *
+                Name of Vendor *
               </label>
               <input
                 className="form-control"
@@ -136,15 +149,29 @@ export const AddDeptModal = (props) => {
             </div>
             <div className="form-group">
               <label className="form-label" htmlFor="input-4">
-                Acronym *
+                Phone Number *
               </label>
               <input
                 className="form-control"
                 type="text"
-                name="acronym"
-                placeholder="acronym"
+                name="phoneNumber"
+                placeholder="phone number"
                 onChange={handleChange}
-                value={formValues.acronym}
+                value={formValues.phoneNumber}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label" htmlFor="input-4">
+               Address *
+              </label>
+              <input
+                className="form-control"
+                type="text"
+                name="address"
+                placeholder="address"
+                onChange={handleChange}
+                value={formValues.address}
               />
             </div>
             

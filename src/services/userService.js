@@ -201,7 +201,7 @@ export const userService =  {
 
   registerUser: async (data) => {
     try {
-      const url = `${serverUrl}/auth/create`
+      const url = `${serverUrl}/auth/register`
       const method = 'POST'
       const response = await client(url, method, { ...data });
       if (!response)
@@ -214,8 +214,7 @@ export const userService =  {
 
   getStaff:async () => {
     try {
-      const url = `${serverUrl}/staff/all?role=admin&role=aedc_staff`
-      console.log('Url ----------------', url)
+      const url = `${serverUrl}/staff/all`
       const method = 'GET'
       const response = await client(url, method);
       if (!response)

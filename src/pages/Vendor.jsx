@@ -10,15 +10,18 @@ import { WithPermissions } from "../components/elements/WithPermissions.jsx";
 import { SUSPEND_USER_PERMISSIONS } from "../utils/permissions.js"
 import { Link } from "react-router-dom";
 import { crudService } from "../services/crudService.js";
+import { AddVendorModal } from "../modals/AddVendorModal.jsx";
 
 export const Vendors = (props) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [data, setdata] = useState([]);
   const [newData, setNewData] = useState(false)
+  const [showAddModal, setShowAddModal] = useState(false);
   let notifier = new AWN();
 
   const fetchData = () => {
+    setLoading(true)
     crudService.getVendors().then((res) => {
       const {
         data: { results },
@@ -54,6 +57,19 @@ export const Vendors = (props) => {
     });
   }
 
+
+  const handleAddShowModal = () => {
+    setShowAddModal(true)
+  };
+
+  const handleCloseModal = (data) => {
+    if (data?.addVendor) {
+      setShowAddModal(false);
+      fetchData();
+    }
+    setNewData(!newData)
+  };
+
   const listItems = data.map((user, key) => {
     let number = key + 1;
     return (
@@ -86,13 +102,17 @@ export const Vendors = (props) => {
   };
 
   const handleDataChange = (data) => {
+    if (data.clearSearch) {
+      fetchData();
+      return
+    }
     setdata(data);
   };
 
 
   return (
     <>
-    
+    <AddVendorModal show={showAddModal} onHide={handleCloseModal} />
     { 
       loading? <PageLoader /> :
       <div className="box-content">
@@ -141,16 +161,12 @@ export const Vendors = (props) => {
                     data-bs-display="static"
                     />
                     <ul className="dropdown-menu dropdown-menu-light dropdown-menu-end" aria-labelledby="dropdownMenu2" >
-                      <li>
-                        {/* <a className="dropdown-item active" href="#" onClick={() => setInviteModal(true)}>
-                          Invite User
-                        </a> */}
-
-                        <Link className="dropdown-item active" to="/user/register">
-                            Register User
-                        </Link> 
-                      </li>
-                    </ul>
+                        <li>
+                          <a className="dropdown-item active" href="#/" onClick={() => handleAddShowModal()}>
+                            Add new
+                          </a>
+                        </li>
+                      </ul>
                   </div>
                   { loading ? <MiniSpinner /> : 
                     (

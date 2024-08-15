@@ -3,14 +3,13 @@ import { SubmitButton } from "../components/elements/Buttons"
 import { userService } from '../services/userService'
 import toastr from 'toastr'
 import { PageLoader } from "../components/elements/spinners";
-import { useNavigate } from 'react-router-dom';
-import { DepartmentDropDown } from "../components/elements/DepartmentDropDown";
-import { RespondersDropDown } from "../components/elements/RespondersDropDown";
+import { VendorDropDown } from "../components/elements/VendorDropDown";
+import { StaffTypeDropDown } from "../components/elements/StaffTypeDropDown";
+import { StateDropDown } from "../components/elements/StateDropDown";
 
-export const RegisterNewUser = () => {
-  const navigate = useNavigate();
+export const RegisterNewStaff = () => {
   const [submitForm, setSubmitForm] = useState(true);
-  const [isResponder, setIsResponder] = useState(false);
+  const [isInstaller, setIsInstaller] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(()=> {
@@ -20,8 +19,9 @@ export const RegisterNewUser = () => {
   const [formValues, setFormValues] = useState({
     email: '',
     phoneNumber: '',
-    department: '',
-    agency: undefined,
+    role: '',
+    staffRegion: '',
+    vendor: undefined,
     fullName: '',
     password: '',
     repeatPassword: '',
@@ -51,7 +51,7 @@ export const RegisterNewUser = () => {
   }
 
   const formErrorMessage = (value) => {
-    const { fullName, phoneNumber, email, password, department, repeatPassword} = formValues
+    const { fullName, phoneNumber, email, password, role, staffRegion, vendor, repeatPassword} = formValues
     if (value === 'fullName') {
       if (submitForm && fullName.length < 3 ) {
         return 'full Name is required'
@@ -70,9 +70,21 @@ export const RegisterNewUser = () => {
       }
     }
 
-    if (value === 'department') {
-      if (submitForm && department?.length < 4 ) {
-        return 'department is required'
+    if (value === 'role') {
+      if (submitForm && role?.length < 1 ) {
+        return 'role is required'
+      }
+    }
+
+    if (value === 'vendor') {
+      if (submitForm && vendor?.length < 1 ) {
+        return 'vendor is required'
+      }
+    }
+
+    if (value === 'staffRegion') {
+      if (submitForm && staffRegion?.length < 1 ) {
+        return 'Staff Region is required'
       }
     }
 
@@ -92,34 +104,39 @@ export const RegisterNewUser = () => {
     }
   }
 
-  const handleDataFromDropDown = (data) => {
+  const handleStaffTypeDropDown = (data) => {
     const { value, label } = data
-    if (label === 'Responder') {
-      setIsResponder(true)
+    if (label === 'Installer') {
+      setIsInstaller(true)
     } else {
-      setIsResponder(false)
+      setIsInstaller(false)
     }
     setFormValues((prevState) => {
       return {
         ...prevState,
-        department: value,
+        role: value,
       };
     });
   }
 
-  const handleDataFromAgency = (data) => {
+  const handleStateDropDown = (data) => {
     const { value } = data
     setFormValues((prevState) => {
       return {
         ...prevState,
-        agency: value,
+        staffRegion: value,
       };
     });
   }
 
-  const getRole = () => {
-    const userType = formValues?.agencyName ? 'responder' : 'user';
-    return userType;
+  const handleVendorDropDown = (data) => {
+    const { value } = data
+    setFormValues((prevState) => {
+      return {
+        ...prevState,
+        vendor: value,
+      };
+    });
   }
 
   const handleSubmit = async (event) => {
@@ -132,27 +149,29 @@ export const RegisterNewUser = () => {
     }
     setLoading(true);
     const { 
-      fullName, email, phoneNumber, agency,
-      password, department, role=getRole(),
+      fullName, email, phoneNumber, role,
+      password, vendor, staffRegion
     } = formValues;
 
-    if (isResponder && !agency) {
-      toastr.error('Kindly Choose a Responder');
+    if (isInstaller && !vendor) {
+      toastr.error('Kindly Choose a Vendor');
       setLoading(false);
       return 
     }
 
     const response = await userService.registerUser({
-      fullName, email, phoneNumber, password, agency,
-      department, role })
-    const { status, message } = response
-    if (status === 'failed') {
-      toastr.error(message);
+      fullName, email, phoneNumber, role,
+      password, vendor, staffRegion })
+    const { status, message, error } = response
+    console.log("Response ===============>>>>> ", response)
+    if (status === 'success') {
+      toastr.success('New staff have been Registered Succesfully');
       setLoading(false)
+      return window.location.replace("/staffs");
     } else {
-      toastr.success('New user have been Registered Succesfully');
+      const alertMessage = message ?? error
+      toastr.error(alertMessage);
       setLoading(false)
-      return navigate('/login')
     }
   };
 
@@ -172,9 +191,7 @@ export const RegisterNewUser = () => {
                         <div className="col-lg-4 col-md-6 col-sm-12 mx-auto">
                           <div className="form-login-cover">
                             <div className="text-center">
-                              <h5 className="mt-10 mb-5 text-brand-1">Register A New User
-                                  <br/> <span style={{color: '#3C65F5'}}>{formValues.email}</span>
-                              </h5> 
+                              <h5 className="mt-10 mb-5 text-brand-1">Register A New Staff </h5> 
                             </div>
                             <form className="login-register text-start mt-20" action="#">
                               <div className="form-group">
@@ -196,34 +213,13 @@ export const RegisterNewUser = () => {
                                   className="form-control" 
                                   type="text" 
                                   name="email" 
-                                  placeholder="Full Name"
+                                  placeholder="Email"
                                   onChange={handleChange}
                                   value={formValues.email}
                                 />
                                 { formErrorMessage('email')?.length && <span className="form_errors"> { formErrorMessage('email') } </span>}
                               </div>
 
-                              <div className="form-group">
-                                <label className="form-label" htmlFor="input-1">Department</label>
-                                <DepartmentDropDown
-                                  label={"Incident Type"}
-                                  dataToComponent={handleDataFromDropDown}
-                                />
-                                { formErrorMessage('department')?.length && <span className="form_errors"> { formErrorMessage('department') } </span>}
-                              </div>
-
-                              {
-                                isResponder &&
-                                <>
-                                <RespondersDropDown
-                                    label={"Agency"}
-                                    dataToComponent={handleDataFromAgency}
-                                  />
-                                  <br/>
-                                </>
-                              }
-                              
-                              
                               <div className="form-group">
                                 <label className="form-label" htmlFor="input-1">Phone Number *</label>
                                 <input 
@@ -237,6 +233,35 @@ export const RegisterNewUser = () => {
                                 { formErrorMessage('phoneNumber')?.length && <span className="form_errors"> { formErrorMessage('phoneNumber') } </span>}
                               </div>
 
+                              <div className="form-group">
+                                <label className="form-label" htmlFor="input-1">Staff Region</label>
+                                <StateDropDown
+                                  label={"State"}
+                                  dataToComponent={handleStateDropDown}
+                                />
+                                { formErrorMessage('staffRegion')?.length && <span className="form_errors"> { formErrorMessage('staffRegion') } </span>}
+                              </div>
+
+                              <div className="form-group">
+                                <label className="form-label" htmlFor="input-1">Type of Staff</label>
+                                <StaffTypeDropDown
+                                  label={"Staff Type"}
+                                  dataToComponent={handleStaffTypeDropDown}
+                                />
+                                { formErrorMessage('role')?.length && <span className="form_errors"> { formErrorMessage('role') } </span>}
+                              </div>
+
+                              {
+                                isInstaller &&
+                                <>
+                                  <VendorDropDown
+                                    label={"Vendor"}
+                                    dataToComponent={handleVendorDropDown}
+                                  />
+                                   { formErrorMessage('vendor')?.length && <span className="form_errors"> { formErrorMessage('vendor') } </span>}
+                                  <br/>
+                                </>
+                              }
                               
 
                               <div className="form-group">
