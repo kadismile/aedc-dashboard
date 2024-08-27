@@ -1,11 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { GoogleSearchModal } from "../../modals/GoogleSearchModal";
 import { WithPermissions } from "../../components/elements/WithPermissions";
 import { 
   DEPARTMENT_PERMISSIONS, 
-  SUSPEND_USER_PERMISSIONS, 
-  ARTICLE_PERMISSIONS } from "../../utils/permissions.js"
+  SUSPEND_USER_PERMISSIONS,  } from "../../utils/permissions.js"
 
 export const SideBar = () => {
   const [showModal, setShowModal] = useState(false);
@@ -29,7 +27,6 @@ export const SideBar = () => {
   return (
     <>
       <div className="nav">
-          <GoogleSearchModal show={showModal} onHide={handleCloseModal} />
           <nav className="nav-main-menu">
             <ul className="main-menu">
               <li> 

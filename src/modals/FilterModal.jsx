@@ -10,6 +10,7 @@ import { StateDropDown } from '../components/elements/StateDropDown';
 import { StatusDropDown } from '../components/elements/StatusDropDown';
 
 export const FilterModal = (props) => {
+  const { status } = props
   const [reports, setReports] = useState(["select a state"])
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false)
@@ -139,12 +140,14 @@ export const FilterModal = (props) => {
               />
             </div> 
 
-            <div className="form-group">
+            {status !== false &&
+              <div className="form-group">
               <StatusDropDown
                 label={"Status"}
                 dataToComponent={handleDataFromStatus}
               />
             </div> 
+            }
             <div className="form-group">
             <input
                 className="form-control"

@@ -178,6 +178,19 @@ export const crudService =  {
       throw e
     }
   },
+
+  getOneInstaller: async (id) => {
+    try {
+      const url = `${serverUrl}/staff/${id}`
+      const method = 'GET'
+      const response = await client(url, method);
+      if (!response)
+        throw new Error("Cannot fetch Installer");
+      return response
+    } catch (e) {
+      throw e
+    }
+  },
 }
 
 const buildUrl = (baseUrl, queryParams) => {

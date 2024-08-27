@@ -240,7 +240,7 @@ export const Meters = (props) => {
                               <th scope="col">Vendor Name</th>
                               <th scope="col">Status</th>
                               <th scope="col">Customer</th>
-                              <th scope="col">Current Address</th>
+                              <th scope="col">Current Location</th>
                             </tr>
                           </thead>
                           <tbody>{listItems()}</tbody>

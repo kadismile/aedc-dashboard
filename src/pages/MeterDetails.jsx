@@ -95,9 +95,7 @@ export const MeterDetails = () => {
                             
                             <div className="col-lg-12">
                               <div className="form-group mt-10">
-                                <button className="btn btn-default btn-brand icon-tick">
-                                  Meter History
-                                </button>
+                              <h5 class="icon-edu">Meter history</h5>
                               </div>
                             </div>
                           </div>
@@ -144,10 +142,8 @@ export const MeterDetails = () => {
                         <div className="col-lg-9">
                           <div className="row">
                             <div className="col-lg-12">
-                              <div className="form-group mt-10">
-                                <button className="btn btn-default btn-brand icon-tick">
-                                  Meter Attachments
-                                </button>
+                              <div className="form-group mt-80">
+                                 <h5 class="icon-edu">Meter Attachments</h5>
                               </div>
                             </div>
                           </div>
@@ -160,7 +156,7 @@ export const MeterDetails = () => {
                                     
                                   </div>
                                   <div className="timeline-info">
-                                    <img src={attachment?.secure_url} alt=""/>
+                                    <img src={attachment?.secure_url} alt="" style={{ width: '50%' }}/>
                                   </div>
                             </div>
                                 </>
