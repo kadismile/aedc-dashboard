@@ -78,16 +78,16 @@ export const Vendors = (props) => {
         <td>{user.name}</td>
         <td>{user.phoneNumber}</td>
         <td>{user.address}</td>
-        <td> <a href="#/" onClick={() => navigate(`/user/${user._id}`)} className="paint-red" title="edit" >
+        {/* <td> <a href="#/" onClick={() => navigate(`/user/${user._id}`)} className="paint-red" title="edit" >
           <i class="fa fa-edit" aria-hidden="true"></i> 
           </a> 
-        </td>
-        <WithPermissions permitedPermissions={ SUSPEND_USER_PERMISSIONS }>
+        </td> */}
+        {/* <WithPermissions permitedPermissions={ SUSPEND_USER_PERMISSIONS }>
           <td> <a href="#/" onClick={() => deleteStaff(user)} className="paint-red" title="delete" >
             <i class="fa fa-trash" aria-hidden="true"></i> 
             </a> 
           </td>             
-        </WithPermissions>
+        </WithPermissions> */}
       </tr>
     );
   });
@@ -178,8 +178,8 @@ export const Vendors = (props) => {
                             <th scope="col">Full Name</th>
                             <th scope="col">Phone Number</th>
                             <th scope="col">Address</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
+                            {/* <th scope="col"></th>
+                            <th scope="col"></th> */}
                           </tr>
                         </thead>
                         <tbody>

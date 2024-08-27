@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom";
 import { Footer } from "../components/Footer/Footer"
 import { PageLoader } from "../components/elements/spinners"
@@ -6,41 +6,27 @@ import ReactMapGL, { Marker, Popup, NavigationControl } from "react-map-gl"
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { LineChart } from "../components/charts/LineChart.jsx";
 import { crudService } from "../services/crudService.js";
+import { FilterModal } from "../modals/FilterModal.jsx";
 
 export const Home = (props) => {
   const [loading, setLoading] = useState(false)
-  const [reports, setReports] = useState([])
-  const [meters, setMeters] = useState([])
-  const [totalCount, setTotalCount] = useState(0)
-  const [meterCount, setMeterCount] = useState(0)
   const [customerCount, setCustomerCount] = useState(0)
   const [customers, setCustomers] = useState(0)
   const [selectedMarker, setSelectedMarker] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
 
+  const [filterData, setFilterData] = useState({
+    totalNumber: 0,
+    totalAssigned: 0,
+    totalInstalled: 0,
+    totalCommissioned: 0,
+  })
 
-  const fetchData = () => {
-    crudService.getMeters().then((res) => {
-      const { data: { results, totalCount } } = res;
-      setTotalCount(totalCount)
-      setMeters(results);
-      setTimeout(() => setLoading(false), 500)
-    });
-  }
 
   useEffect(() => {
-    fetchData()
-    fetchMeterCount()
     fetchCustomerCount()
     fetchCustomers()
   }, []);
-
-  const fetchMeterCount = () => {
-    crudService.getMetersCount().then((res) => {
-      const { data } = res;
-      setMeterCount(data)
-    })
-  }
 
   const fetchCustomerCount = () => {
     crudService.getCustomersCount().then((res) => {
@@ -55,18 +41,34 @@ export const Home = (props) => {
     })
   }
 
-  const totalMeterCount = () => {
-    if (meterCount?.length) {
-      return meterCount.reduce((a, b)=> {
-        return a + b.count
-      }, 0)
-    }
-    return 0
+  const handleCloseModal = () => {
+    setShowFilterModal(false);
+  };
+
+  const handleFilterData = (data) => {
+    // TODO: move this to the backend in the nearst future
+    const total = data?.count || 0
+    const installed = data?.results.filter((meter) => meter.meterStatus === 'installed')
+    const commissioned = data?.results.filter((meter) => meter.meterStatus === 'commisioned')
+    const assigned = data?.results.filter((meter) => meter.meterStatus === 'assigned')
+    setFilterData((prevState) => {
+      return {
+        ...prevState,
+        totalNumber: total,
+        totalInstalled: installed.length,
+        totalCommissioned: commissioned.length,
+        totalAssigned: assigned.length
+      }
+    })
+  };
+
+  const handleModal = () => {
+    setShowFilterModal(true);
   }
 
   return (
     <>
-      
+      <FilterModal show={showFilterModal} onHide={handleCloseModal} dataFromFilter={handleFilterData} status={false}/>
       {loading ? (
         <PageLoader />
       ) : (
@@ -80,13 +82,12 @@ export const Home = (props) => {
                 </div>
                 <div className="col-xl-6 col-lg-7 text-lg-end mt-sm-15">
                   <div className="display-flex2">
-                  <button 
-                    onClick={() => setShowFilterModal(true)}
-                    className="btn btn-default" 
-                    type="submit" 
-                    style={props.style}
+                  <button
+                    onClick={() => handleModal() }
+                    className="btn btn-default"
+                    type="submit"
                   >
-                    <i class="fa-solid fa-bars"></i> FIlter 
+                    <i class="fa-solid fa-bars"></i> FIlter
                   </button>
                   
                   </div>
@@ -99,7 +100,7 @@ export const Home = (props) => {
 
               <div className="section-box">
                 <div className="row">
-                  <div className="col-xxl-2 col-xl-6 col-lg-6 col-md-4 col-sm-6">
+                  <div className="col-xxl-3 col-xl-6 col-lg-6 col-md-4 col-sm-6">
                     <div className="card-style-1 hover-up">
                       <div className="card-image">
                         {" "}
@@ -108,7 +109,7 @@ export const Home = (props) => {
                       <div className="card-info">
                         <div className="card-title">
                           <h3>
-                            {totalMeterCount()}
+                            {filterData.totalNumber}
                             <span className="font-sm status up">
                               <span></span>
                             </span>
@@ -118,34 +119,66 @@ export const Home = (props) => {
                       </div>
                     </div>
                   </div>
-                  { meterCount.length &&
-                    meterCount?.map((meter) => {
-                      return <>
-                      <div className="col-xxl-2 col-xl-6 col-lg-6 col-md-4 col-sm-6">
-                        <div className="card-style-1 hover-up">
-                          <div className="card-image">
-                            {" "}
-                            <img src="/images/bank.svg" alt="jobBox" />
-                          </div>
-                          <div className="card-info">
-                            <div className="card-title">
-                              <h3>
-                                {meter.count}
-                                <span className="font-sm status up">
-                                  <span></span>
-                                </span>
-                              </h3>
-                            </div>
-                            <p className="color-text-paragraph-2">
-                              {meter.vendorName}
-                            </p>
-                          </div>
-                        </div>
+
+                  <div className="col-xxl-3 col-xl-6 col-lg-6 col-md-4 col-sm-6">
+                    <div className="card-style-1 hover-up">
+                      <div className="card-image">
+                        {" "}
+                        <img src="/images/computer.svg" alt="jobBox" />
                       </div>
-                      </>
-                    })
-                  }
-                  
+                      <div className="card-info">
+                        <div className="card-title">
+                          <h3>
+                            {filterData.totalInstalled}
+                            <span className="font-sm status up">
+                              <span></span>
+                            </span>
+                          </h3>
+                        </div>
+                        <p className="color-text-paragraph-2">Total Number of Meters Installed</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-xxl-3 col-xl-6 col-lg-6 col-md-4 col-sm-6">
+                    <div className="card-style-1 hover-up">
+                      <div className="card-image">
+                        {" "}
+                        <img src="/images/computer.svg" alt="jobBox" />
+                      </div>
+                      <div className="card-info">
+                        <div className="card-title">
+                          <h3>
+                            {filterData.totalCommissioned}
+                            <span className="font-sm status up">
+                              <span></span>
+                            </span>
+                          </h3>
+                        </div>
+                        <p className="color-text-paragraph-2">Total Number of Meters Commissioned</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-xxl-3 col-xl-6 col-lg-6 col-md-4 col-sm-6">
+                    <div className="card-style-1 hover-up">
+                      <div className="card-image">
+                        {" "}
+                        <img src="/images/computer.svg" alt="jobBox" />
+                      </div>
+                      <div className="card-info">
+                        <div className="card-title">
+                          <h3>
+                            {filterData.totalAssigned}
+                            <span className="font-sm status up">
+                              <span></span>
+                            </span>
+                          </h3>
+                        </div>
+                        <p className="color-text-paragraph-2">Total Number of Meters Assigned</p>
+                      </div>
+                    </div>
+                  </div>
                   
                 </div>
               </div>

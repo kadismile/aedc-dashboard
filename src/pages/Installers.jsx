@@ -10,8 +10,11 @@ import { WithPermissions } from "../components/elements/WithPermissions.jsx";
 import { SUSPEND_USER_PERMISSIONS } from "../utils/permissions.js"
 import { Link } from "react-router-dom";
 import { crudService } from "../services/crudService.js";
+import { DisplayFileModal } from "../modals/DisplayFileModal.jsx";
 
 export const Installers = (props) => {
+  const [showModal, setShowModal] = useState(false);
+  const [staff, setStaff] = useState(undefined);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [data, setdata] = useState([]);
@@ -60,8 +63,15 @@ export const Installers = (props) => {
     return (
       <tr key={key}>
         <td>{number++}</td>
-        <td>{user.fullName}</td>
-        <td>{user.phoneNumber}</td>
+        <td>
+          <Link to={`#/`} onClick={() => openModal(user) }> {user.fullName} </Link>
+        </td>
+        <td>
+          <Link to={`#/`} onClick={() => openModal(user) }>  {user.fullName} </Link>
+        </td>
+        <td>
+          <Link to={`#/`} onClick={() => openModal(user) }>  {user.phoneNumber} </Link>
+        </td>
         <td>{user?.vendor?.name}</td>
         <td> <a href="#/" onClick={() => navigate(`/user/${user._id}`)} className="paint-red" title="edit" >
           <i class="fa fa-edit" aria-hidden="true"></i> 
@@ -94,10 +104,18 @@ export const Installers = (props) => {
     setdata(data);
   };
 
+  const openModal = (data) => {
+    setStaff(data);
+    setShowModal(true);
+  }
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <>
-    
+      <DisplayFileModal show={showModal} onHide={handleCloseModal} staff={staff} />
     { 
       loading? <PageLoader /> :
       <div className="box-content">

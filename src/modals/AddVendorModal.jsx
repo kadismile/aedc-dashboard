@@ -142,7 +142,7 @@ export const AddVendorModal = (props) => {
                 id="input-1"
                 type="text"
                 name="name"
-                placeholder="name of department"
+                placeholder="name"
                 onChange={handleChange}
                 value={formValues.name}
               />

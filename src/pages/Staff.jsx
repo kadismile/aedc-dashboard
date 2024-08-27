@@ -9,12 +9,17 @@ import toastr from 'toastr'
 import { WithPermissions } from "../components/elements/WithPermissions.jsx";
 import { SUSPEND_USER_PERMISSIONS } from "../utils/permissions.js"
 import { Link } from "react-router-dom";
+import { FilterModal } from "../modals/FilterModal.jsx";
 
 export const Staffs = (props) => {
   const navigate = useNavigate();
+  const [searched, setSearched] = useState(false);
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [data, setdata] = useState([]);
   const [newData, setNewData] = useState(false)
+  const [documentCount, setDocumentCount] = useState(0)
   let notifier = new AWN();
 
   const fetchData = () => {
@@ -24,6 +29,7 @@ export const Staffs = (props) => {
         data: { results },
       } = res;
       setdata(results);
+      setDocumentCount(res.data.filterdDocumentsCount)
       setTimeout(() => setLoading(false), 500)
     });
   }
@@ -91,13 +97,32 @@ export const Staffs = (props) => {
       fetchData();
       return
     }
+    setSearched(true)
     setdata(data);
+    setDocumentCount(data.length)
   };
 
+  const handleModal = () => {
+    setSearched(prevSearched => {
+      return false;
+    });
+    setShowFilterModal(true);
+  }
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setShowFilterModal(false);
+  };
+  const handleFilterData = (data) => {
+    if (searched === false) {
+      setdata(data.results)
+      setDocumentCount(data.filterdDocumentsCount)
+    }
+  };
 
   return (
     <>
-    
+    {/* <FilterModal show={showFilterModal} onHide={handleCloseModal} dataFromFilter={handleFilterData} /> */}
     { 
       loading? <PageLoader /> :
       <div className="box-content">
@@ -129,16 +154,19 @@ export const Staffs = (props) => {
               <div className="container">
                 <div className="panel-white">
                   <div className="panel-head">
-                    <div className="row"> 
-                    <div className=" col-lg-4"></div>
-                      <Search
-                        loading={loading} 
-                        setLoading={handleLoadingChange}
-                        setData={ handleDataChange }
-                        searchTextHandler={ handleSearchText }
-                        type={'users'}
-                      />
-                    </div>
+                  <div className="row">
+                          <div className="col-xl-6 col-lg-5">
+                            <Search
+                              loading={loading}
+                              setLoading={handleLoadingChange}
+                              setData={handleDataChange}
+                              searchTextHandler={handleSearchText}
+                              model={"staffs"}
+                            />
+                          </div>
+                          
+                        </div>
+                    
                     
                     <a className="menudrop" id="dropdownMenu2" type="button"
                     data-bs-toggle="dropdown"
@@ -147,12 +175,8 @@ export const Staffs = (props) => {
                     />
                     <ul className="dropdown-menu dropdown-menu-light dropdown-menu-end" aria-labelledby="dropdownMenu2" >
                       <li>
-                        {/* <a className="dropdown-item active" href="#" onClick={() => setInviteModal(true)}>
-                          Invite User
-                        </a> */}
-
                         <Link className="dropdown-item active" to="/user/register">
-                            Register User
+                            Register Staff
                         </Link> 
                       </li>
                     </ul>
