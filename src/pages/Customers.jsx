@@ -168,7 +168,7 @@ export const Customers = (props) => {
                             <th scope="col">Full Name</th>
                             <th scope="col">Phone Number</th>
                             <th scope="col">Meter Num.</th>
-                            <th scope="col">Address</th>
+                            <th scope="col">House Address</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                           </tr>
