@@ -115,7 +115,27 @@ export const Home = (props) => {
                             </span>
                           </h3>
                         </div>
-                        <p className="color-text-paragraph-2">Total Number of Meters</p>
+                        <p className="color-text-paragraph-2">Total Number of Meters Available</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-xxl-3 col-xl-6 col-lg-6 col-md-4 col-sm-6">
+                    <div className="card-style-1 hover-up">
+                      <div className="card-image">
+                        {" "}
+                        <img src="/images/computer.svg" alt="jobBox" />
+                      </div>
+                      <div className="card-info">
+                        <div className="card-title">
+                          <h3>
+                            {filterData.totalAssigned}
+                            <span className="font-sm status up">
+                              <span></span>
+                            </span>
+                          </h3>
+                        </div>
+                        <p className="color-text-paragraph-2">Total Number of Meters Assigned</p>
                       </div>
                     </div>
                   </div>
@@ -160,25 +180,7 @@ export const Home = (props) => {
                     </div>
                   </div>
 
-                  <div className="col-xxl-3 col-xl-6 col-lg-6 col-md-4 col-sm-6">
-                    <div className="card-style-1 hover-up">
-                      <div className="card-image">
-                        {" "}
-                        <img src="/images/computer.svg" alt="jobBox" />
-                      </div>
-                      <div className="card-info">
-                        <div className="card-title">
-                          <h3>
-                            {filterData.totalAssigned}
-                            <span className="font-sm status up">
-                              <span></span>
-                            </span>
-                          </h3>
-                        </div>
-                        <p className="color-text-paragraph-2">Total Number of Meters Assigned</p>
-                      </div>
-                    </div>
-                  </div>
+                  
                   
                 </div>
               </div>
