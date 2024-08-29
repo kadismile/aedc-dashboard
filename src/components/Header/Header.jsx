@@ -58,7 +58,6 @@ export const Header = () => {
             </div>
             <div className="header-right">
               <div className="block-signin">
-                
                 <div className="dropdown d-inline-block">
                   <ul className="dropdown-menu dropdown-menu-light dropdown-menu-end" aria-labelledby="dropdownNotify">
                     <li><a className="dropdown-item active" href="#">10 notifications</a></li>
@@ -69,7 +68,12 @@ export const Header = () => {
                 
                 <div className="member-login">
                   <img src="/images/profile-photo.webp" alt="jobBox" />
-                  <div className="info-member"> <strong className="color-brand-1">{fullName}</strong>
+                  <div className="info-member"> 
+                    <strong className="color-brand-1">{fullName}</strong>
+                    <i className="color-brand-1 text-center">
+                      <i class="fa-solid fa-right-from-bracket"> </i>
+                      <a className="text-center" href="/login" onClick={() => logOut()}>Logout</a>
+                    </i>
                     <div className="dropdown"><a className="font-xs color-text-paragraph-2 icon-down" 
                         id="dropdownProfile" 
                         type="button" data-bs-toggle="dropdown" 
@@ -78,7 +82,6 @@ export const Header = () => {
                         style={{color: '#3b65f5'}}>{staff?.department?.acronym}</a>
                       <ul className="dropdown-menu dropdown-menu-light dropdown-menu-end" aria-labelledby="dropdownProfile">
                         <li><a className="dropdown-item" href="/#">Profiles</a></li>
-                        <li><a className="dropdown-item" href="#" onClick={() => handleShowModal()}>Change Password</a></li>
                         <br/>
                         <li><a className="dropdown-item" href="/login" onClick={() => logOut()}>Logout</a></li>
                       </ul>
