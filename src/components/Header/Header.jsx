@@ -83,7 +83,7 @@ export const Header = () => {
                       <ul className="dropdown-menu dropdown-menu-light dropdown-menu-end" aria-labelledby="dropdownProfile">
                         <li><a className="dropdown-item" href="/#">Profiles</a></li>
                         <br/>
-                        <li><a className="dropdown-item" href="/login" onClick={() => logOut()}>Logout</a></li>
+                        <li><a className="dropdown-item" href="/" onClick={() => logOut()}>Logout</a></li>
                       </ul>
                     </div>
                   </div>
