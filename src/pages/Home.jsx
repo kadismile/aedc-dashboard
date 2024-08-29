@@ -47,14 +47,15 @@ export const Home = (props) => {
 
   const handleFilterData = (data) => {
     // TODO: move this to the backend in the nearst future
-    const total = data?.count || 0
+    const total = data?.results.filter((meter) => meter.meterStatus === 'new_meter') || 0
     const installed = data?.results.filter((meter) => meter.meterStatus === 'installed')
     const commissioned = data?.results.filter((meter) => meter.meterStatus === 'commisioned')
     const assigned = data?.results.filter((meter) => meter.meterStatus === 'assigned')
+    
     setFilterData((prevState) => {
       return {
         ...prevState,
-        totalNumber: total,
+        totalNumber: total.length,
         totalInstalled: installed.length,
         totalCommissioned: commissioned.length,
         totalAssigned: assigned.length
