@@ -8,12 +8,14 @@ import { reportService } from '../services/reportsService';
 import { VendorDropDown } from '../components/elements/VendorDropDown';
 import { StateDropDown } from '../components/elements/StateDropDown';
 import { StatusDropDown } from '../components/elements/StatusDropDown';
+import { CSVModal } from './CSVModal';
 
 export const FilterModal = (props) => {
   const { status } = props
   const [reports, setReports] = useState(["select a state"])
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false)
+  const [showCSVModal, setShowCSVModal] = useState(false);
   const [formValues, setFormValues] = useState({
     state: undefined,
     date: '',
@@ -72,6 +74,7 @@ export const FilterModal = (props) => {
 
   const handleCloseModal = () => {
     setShowModal(false);
+    setShowCSVModal(false);
   };
 
   const calendarData = (calData = []) => {
@@ -110,6 +113,7 @@ export const FilterModal = (props) => {
   return (
     <> 
     <CalendarModal show={showModal} onHide={handleCloseModal} data={calendarData}/>
+    <CSVModal show={showCSVModal} onHide={handleCloseModal} />
     <Modal
       size='sm'
       dialogClassName="left-modal"
@@ -167,11 +171,23 @@ export const FilterModal = (props) => {
               <div className="display-flex2">
               <button 
                   onClick={downloadCSV}
-                  className="btn btn-default btn-sm" 
+                  className="btn btn-default btn-lg" 
                   type="submit" 
                   style={{padding: '6px 15px'}}
               >
                 <i class="fa-solid fa-cloud-download"></i> Download CSv
+              </button>
+
+              <br/>
+              <br/>
+              
+
+              <button 
+                  onClick={ () => setShowCSVModal(true)}
+                  className="btn btn-default btn-lg" 
+                  style={{padding: '6px 15px'}}
+              >
+                <i class="fa-solid fa-cloud-upload"></i> Upload Meter CSv
               </button>
               </div>
 

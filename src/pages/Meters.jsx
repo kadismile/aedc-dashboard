@@ -211,7 +211,6 @@ export const Meters = (props) => {
                               searchTextHandler={handleSearchText}
                               model={"meters"}
                             />
-                           
                           </div>
                           <div className="col-xl-6 col-lg-7 text-lg-end mt-sm-15">
                             <div className="display-flex2">
@@ -221,7 +220,7 @@ export const Meters = (props) => {
                                   className="btn btn-default"
                                   type="submit"
                                 >
-                                  <i class="fa-solid fa-bars"></i> FIlter
+                                  <i class="fa-solid fa-bars"></i> Menu
                                 </button>
                               </div>
                             </div>
