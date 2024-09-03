@@ -191,6 +191,18 @@ export const crudService =  {
       throw e
     }
   },
+
+  uploadProductCsv: async (data) => {
+    try {
+      const url = `${serverUrl}/meter/upload`
+      const method = "POST"
+      const contentType = "true"
+      const response = await client(url, method, data, contentType)
+      return response
+    } catch (e) {
+      throw e
+    }
+  },
 }
 
 const buildUrl = (baseUrl, queryParams) => {

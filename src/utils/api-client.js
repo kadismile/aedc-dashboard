@@ -26,5 +26,6 @@ export const  client = async (url, method, reqBody = undefined, contentType) => 
     return response.json()
   } catch (err) {
     console.log('Client Error -------> ', err)
+    return err
   }
 }
