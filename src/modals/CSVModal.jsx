@@ -17,19 +17,24 @@ export const CSVModal = (props) => {
   });
   const [loading, setLoading] = useState(false);
 
-
   const sampleData = [
-    { meterNumber: '20652790234', barcode: '1230985789094', typeOfMeter: 'three phase meter', state: 'Abuja', },
+    { 
+      meterNumber: '10652790409', barcode: '12200390789094', typeOfMeter: 'three phase meter', 
+      customerName: 'kadismile', phoneNumber: '07045678893', customerEmail: 'giovanni22@gmail.com', 
+      address: 'Area 2 Garki Abuja', state: 'Abuja' 
+    },
   ];
 
-  const handleDownload = () => {
+  const handleDownload = (e) => {
+    e.preventDefault()
     const csv = Papa.unparse(sampleData);
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     saveAs(blob, 'meter-sample.csv');
   };
 
-  const downloadErrorCsv = () => {
-    const csv = Papa.unparse(sampleData);
+  const downloadErrorCsv = (data) => {
+    console.log("Data =========>>> ", data )
+    const csv = Papa.unparse(data);
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     saveAs(blob, 'error-sample.csv');
   };
@@ -65,6 +70,7 @@ export const CSVModal = (props) => {
     let formData = new FormData();
     formData.append("fileUpload", file[0]);
     let csvResponse = await crudService.uploadProductCsv(formData);
+    console.log("CSV response =========>>>>>> ", csvResponse)
     const { status, data } = csvResponse;
     if (status === "failed") {
       toastr.error("Error uploading some values in csv file");

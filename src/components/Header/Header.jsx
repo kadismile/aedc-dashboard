@@ -5,8 +5,10 @@ import { useEffect,  useState } from 'react';
 import { crudService } from '../../services/crudService';
 import { ChangePasswordModal } from '../../modals/ChangePasswordModal';
 import { Notifications } from '../Notification/Notification';
+import { useNavigate } from 'react-router-dom';
 
 export const Header = () => {
+  const navigate = useNavigate(); 
   const [data, setdata] = useState([]);
   const [showModal, setShowModal] = useState(false);
   let staff = store?.getState()?.staff?.staff
@@ -21,7 +23,7 @@ export const Header = () => {
 
   const logOut = () => {
     dispatch( resetStaff() );
-    window.location.replace("/");
+    navigate('/about');
   }
 
   useEffect(() => {
