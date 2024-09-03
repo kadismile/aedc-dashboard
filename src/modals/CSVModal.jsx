@@ -18,9 +18,8 @@ export const CSVModal = (props) => {
   const [loading, setLoading] = useState(false);
 
 
-  // meterNumber, typeOfMeter, vendor, meterStatus, barcode
   const sampleData = [
-    { meterNumber: '20652790234', barcode: '1230985789094', typeOfMeter: 'three-phase-meter', state: 'Abuja', },
+    { meterNumber: '20652790234', barcode: '1230985789094', typeOfMeter: 'three phase meter', state: 'Abuja', },
   ];
 
   const handleDownload = () => {
@@ -66,14 +65,13 @@ export const CSVModal = (props) => {
     let formData = new FormData();
     formData.append("fileUpload", file[0]);
     let csvResponse = await crudService.uploadProductCsv(formData);
-    console.log("response --------->>>>.", csvResponse)
     const { status, data } = csvResponse;
     if (status === "failed") {
       toastr.error("Error uploading some values in csv file");
       await downloadErrorCsv(data);
     }
     if (status === "success") {
-      toastr.success("products uploaded successfully");
+      toastr.success("Meter uploaded successfully");
     }
   };
 
