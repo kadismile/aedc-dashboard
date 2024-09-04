@@ -113,6 +113,7 @@ export const FilterModal = (props) => {
   const displayModal = (e) => {
     e.preventDefault();
     setShowCSVModal(true)
+    props.onHide()
   }
 
   return (
