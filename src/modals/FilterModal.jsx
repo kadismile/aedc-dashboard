@@ -110,6 +110,11 @@ export const FilterModal = (props) => {
     download(csvConfig)(csv);
   }
 
+  const displayModal = (e) => {
+    e.preventDefault();
+    setShowCSVModal(true)
+  }
+
   return (
     <> 
     <CalendarModal show={showModal} onHide={handleCloseModal} data={calendarData}/>
@@ -183,7 +188,7 @@ export const FilterModal = (props) => {
               
 
               <button 
-                  onClick={ () => setShowCSVModal(true)}
+                  onClick={ displayModal }
                   className="btn btn-default btn-lg" 
                   style={{padding: '6px 15px'}}
               >
