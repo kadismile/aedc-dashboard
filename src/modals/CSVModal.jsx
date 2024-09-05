@@ -5,6 +5,7 @@ import { saveAs } from 'file-saver';
 import Papa from 'papaparse';
 import toastr from "toastr";
 import { crudService } from '../services/crudService';
+import { LoadingButton, SubmitButton } from '../components/elements/Buttons';
 
 
 export const CSVModal = (props) => { 
@@ -56,8 +57,10 @@ export const CSVModal = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { file } = formValues;
+    setLoading(true)
     if (!file) {
       toastr.error('kindly upload a csv file')
+      setLoading(false)
       return; 
     }
     setLoading(true);
@@ -74,9 +77,11 @@ export const CSVModal = (props) => {
     const { status, data } = csvResponse;
     if (status === "failed") {
       toastr.error("Error uploading some values in csv file");
+      setLoading(false)
       await downloadErrorCsv(data);
     }
     if (status === "success") {
+      setLoading(false)
       toastr.success("Meter uploaded successfully");
     }
   };
@@ -120,15 +125,13 @@ export const CSVModal = (props) => {
                       <span className="addGroup__error">{errors.file}</span>
                     )}
             </div>
-
-            <button
-                type="button"
-                onClick={handleSubmit}
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Upload Csv
-              </button>
+            {
+              !loading ? (
+                <SubmitButton onClick={ handleSubmit } title={'Upload Csv'} className={'btn btn-secondary'}/>
+              ) : (
+                <SubmitButton title={'Uploading....'} className={'btn btn-secondary'}/>
+              )
+            }
             
           </form>
         
